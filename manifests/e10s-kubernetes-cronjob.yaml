@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: get-environments
+spec:
+  schedule: "*/13 * * * *" # every 13 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: e10s-sa
+          restartPolicy: Never
+          containers:
+          - name: get-environments
+            image: alpine/k8s:1.29.1
+            imagePullPolicy: IfNotPresent
+            ## if the cluster_name is set, it will be printed at the top of the page
+            # env:
+            # - name: CLUSTER_NAME
+            #   value: qa-gcp1
+            command: ["/usr/bin/python", "/apps/get_environments.py"]
+            volumeMounts:
+            - name: config-volume
+              mountPath: /apps
+            - name: docs
+              mountPath: /apps/docs
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL
+          volumes:
+          - name: config-volume
+            configMap:
+              name: get-environments
+              items:
+              - key: get_environments.py
+                path: get_environments.py
+          - name: docs
+            emptyDir: {}
+          securityContext:
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            fsGroup: 1001
+            runAsGroup: 1001
+            runAsUser: 1001
+            fsGroupChangePolicy: OnRootMismatch

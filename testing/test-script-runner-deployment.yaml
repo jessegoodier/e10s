@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-script-runner-get-environments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: get-environments
+  template:
+    metadata:
+      labels:
+        app: get-environments
+    spec:
+      serviceAccountName: e10s-sa
+      containers:
+      - name: get-environments
+        image: alpine/k8s:1.29.1
+        imagePullPolicy: IfNotPresent
+        command: ["sleep", "3600"] # exec into the pod and run
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /apps
+        - name: docs
+          mountPath: /apps/docs
+        securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            capabilities:
+                drop:
+                - ALL
+      volumes:
+      - name: config-volume
+        configMap:
+          name: get-environments
+          items:
+          - key: get_environments.py
+            path: get_environments.py
+      - name: docs
+        emptyDir: {}
+      securityContext:
+          runAsNonRoot: true
+          seccompProfile:
+              type: RuntimeDefault
+          fsGroup: 1001
+          runAsGroup: 1001
+          runAsUser: 1001
+          fsGroupChangePolicy: OnRootMismatch

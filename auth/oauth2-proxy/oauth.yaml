@@ -1,0 +1,20 @@
+
+config:
+  clientID: "abc.apps.googleusercontent.com"
+  clientSecret: "defgh"
+  cookieSecret: "ijklmnop"
+  configFile: |-
+    email_domains = [ "yourdomain.io" ]
+    upstreams = [ "http://e10s-web:8080" ]
+ingress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-http
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  className: nginx
+  hosts:
+  - envs.e10s.yourdomain.io
+  tls:
+  - hosts:
+    - envs.e10s.yourdomain.io
+    secretName: envs-ingress-tls

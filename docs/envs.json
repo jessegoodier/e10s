@@ -1,0 +1,456 @@
+{
+  "ClusterName": "null",
+  "Namespaces": [
+    {
+      "Namespace": "default",
+      "Ingress": [],
+      "Pods": [],
+      "HelmReleases": []
+    },
+    {
+      "Namespace": "e10s",
+      "Ingress": [],
+      "Pods": [
+        {
+          "Pod": "e10s-web-fd7fb655-h4nkn",
+          "Containers": [
+            {
+              "ContainerName": "e10s-web",
+              "Image": "nginxinc/nginx-unprivileged",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T20:00:07Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "e10s-web-fd7fb655-lt4vx",
+          "Containers": [
+            {
+              "ContainerName": "e10s-web",
+              "Image": "nginxinc/nginx-unprivileged",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T20:00:08Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "get-environments-28487259-xsphr",
+          "Containers": [
+            {
+              "ContainerName": "get-environments",
+              "Image": "alpine/k8s:1.29.1",
+              "Status": {
+                "terminated": {
+                  "containerID": "containerd://d7b7b1599f70f4d452fd7d99ba7e43ceeaf69de9bb7526582e6551f5b887a508",
+                  "exitCode": 0,
+                  "finishedAt": "2024-02-29T19:39:06Z",
+                  "reason": "Completed",
+                  "startedAt": "2024-02-29T19:39:00Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "get-environments-28487272-gl2r8",
+          "Containers": [
+            {
+              "ContainerName": "get-environments",
+              "Image": "alpine/k8s:1.29.1",
+              "Status": {
+                "terminated": {
+                  "containerID": "containerd://8fb1418061415b4a393be903f3c41c4ab9419d3336ce3730579c862381d81327",
+                  "exitCode": 0,
+                  "finishedAt": "2024-02-29T19:52:06Z",
+                  "reason": "Completed",
+                  "startedAt": "2024-02-29T19:52:00Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "get-environments-28487280-hbzt4",
+          "Containers": [
+            {
+              "ContainerName": "get-environments",
+              "Image": "alpine/k8s:1.29.1",
+              "Status": {
+                "terminated": {
+                  "containerID": "containerd://543d12088a4d725d1629f98f889c7394d245221db53715b862a7082b2a567a2e",
+                  "exitCode": 0,
+                  "finishedAt": "2024-02-29T20:00:06Z",
+                  "reason": "Completed",
+                  "startedAt": "2024-02-29T20:00:00Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "test-script-runner-get-environments-f64c7bfb4-vppnl",
+          "Containers": [
+            {
+              "ContainerName": "get-environments",
+              "Image": "alpine/k8s:1.29.1",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:30:35Z"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "HelmReleases": []
+    },
+    {
+      "Namespace": "ingress-nginx",
+      "Ingress": [],
+      "Pods": [
+        {
+          "Pod": "ingress-nginx-controller-7fdbfcb8f9-n7wkh",
+          "Containers": [
+            {
+              "ContainerName": "controller",
+              "Image": "registry.k8s.io/ingress-nginx/controller:v1.9.6@sha256:1405cc613bd95b2c6edd8b2a152510ae91c7e62aea4698500d23b2145960ab9c",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-28T22:08:51Z"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "HelmReleases": [
+        {
+          "name": "ingress-nginx",
+          "namespace": "ingress-nginx",
+          "revision": "1",
+          "updated": "2024-02-28 22:08:39.56260086 +0000 UTC",
+          "status": "deployed",
+          "chart": "ingress-nginx-4.9.1",
+          "app_version": "1.9.6"
+        }
+      ]
+    },
+    {
+      "Namespace": "kube-node-lease",
+      "Ingress": [],
+      "Pods": [],
+      "HelmReleases": []
+    },
+    {
+      "Namespace": "kube-public",
+      "Ingress": [],
+      "Pods": [],
+      "HelmReleases": []
+    },
+    {
+      "Namespace": "kube-system",
+      "Ingress": [],
+      "Pods": [
+        {
+          "Pod": "aws-node-5cgsb",
+          "Containers": [
+            {
+              "ContainerName": "aws-node",
+              "Image": "602401143452.dkr.ecr.us-east-2.amazonaws.com/amazon-k8s-cni:v1.16.0-eksbuild.1",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:30:36Z"
+                }
+              }
+            },
+            {
+              "ContainerName": "aws-eks-nodeagent",
+              "Image": "602401143452.dkr.ecr.us-east-2.amazonaws.com/amazon/aws-network-policy-agent:v1.0.7-eksbuild.1",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:30:17Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "aws-node-vn5zh",
+          "Containers": [
+            {
+              "ContainerName": "aws-node",
+              "Image": "602401143452.dkr.ecr.us-east-2.amazonaws.com/amazon-k8s-cni:v1.16.0-eksbuild.1",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-27T15:42:23Z"
+                }
+              }
+            },
+            {
+              "ContainerName": "aws-eks-nodeagent",
+              "Image": "602401143452.dkr.ecr.us-east-2.amazonaws.com/amazon/aws-network-policy-agent:v1.0.7-eksbuild.1",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-27T15:42:22Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "coredns-6556f9967c-dbkwc",
+          "Containers": [
+            {
+              "ContainerName": "coredns",
+              "Image": "602401143452.dkr.ecr.us-east-2.amazonaws.com/eks/coredns:v1.11.1-eksbuild.4",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-27T15:42:06Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "coredns-6556f9967c-w4dfr",
+          "Containers": [
+            {
+              "ContainerName": "coredns",
+              "Image": "602401143452.dkr.ecr.us-east-2.amazonaws.com/eks/coredns:v1.11.1-eksbuild.4",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-27T15:42:06Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "eks-pod-identity-agent-ggljp",
+          "Containers": [
+            {
+              "ContainerName": "eks-pod-identity-agent",
+              "Image": "602401143452.dkr.ecr.us-east-2.amazonaws.com/eks/eks-pod-identity-agent:0.1.6",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-27T15:42:12Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "eks-pod-identity-agent-k5chq",
+          "Containers": [
+            {
+              "ContainerName": "eks-pod-identity-agent",
+              "Image": "602401143452.dkr.ecr.us-east-2.amazonaws.com/eks/eks-pod-identity-agent:0.1.6",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:30:16Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "kube-proxy-lzllt",
+          "Containers": [
+            {
+              "ContainerName": "kube-proxy",
+              "Image": "602401143452.dkr.ecr.us-east-2.amazonaws.com/eks/kube-proxy:v1.29.0-minimal-eksbuild.1",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-27T15:41:56Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "kube-proxy-t7tl5",
+          "Containers": [
+            {
+              "ContainerName": "kube-proxy",
+              "Image": "602401143452.dkr.ecr.us-east-2.amazonaws.com/eks/kube-proxy:v1.29.0-minimal-eksbuild.1",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:30:15Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "metrics-server-68d598954c-wnvv8",
+          "Containers": [
+            {
+              "ContainerName": "metrics-server",
+              "Image": "registry.k8s.io/metrics-server/metrics-server:v0.7.0",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T17:45:38Z"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "HelmReleases": [
+        {
+          "name": "metrics-server",
+          "namespace": "kube-system",
+          "revision": "1",
+          "updated": "2024-02-29 12:45:34.608026931 -0500 EST",
+          "status": "deployed",
+          "chart": "metrics-server-3.12.0",
+          "app_version": "0.7.0"
+        }
+      ]
+    },
+    {
+      "Namespace": "kubecost",
+      "Ingress": [
+        {
+          "Host": "kubecost.qa-eks.kubecost.com",
+          "Path": "/"
+        }
+      ],
+      "Pods": [
+        {
+          "Pod": "kubecost-cost-analyzer-74987fb57f-cxp8t",
+          "Containers": [
+            {
+              "ContainerName": "cost-model",
+              "Image": "gcr.io/kubecost1/cost-model-nightly:latest",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:13:50Z"
+                }
+              }
+            },
+            {
+              "ContainerName": "cost-analyzer-frontend",
+              "Image": "gcr.io/kubecost1/frontend-nightly:latest",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:13:51Z"
+                }
+              }
+            },
+            {
+              "ContainerName": "aggregator",
+              "Image": "gcr.io/kubecost1/cost-model-nightly:latest",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:13:50Z"
+                }
+              }
+            },
+            {
+              "ContainerName": "cloud-cost",
+              "Image": "gcr.io/kubecost1/cost-model-nightly:latest",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:13:46Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "kubecost-forecasting-5df65989f-qzt4k",
+          "Containers": [
+            {
+              "ContainerName": "forecasting",
+              "Image": "gcr.io/kubecost1/kubecost-modeling:v0.1.3",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:01:47Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "kubecost-grafana-79f678d976-pz2vh",
+          "Containers": [
+            {
+              "ContainerName": "grafana-sc-dashboard",
+              "Image": "kiwigrid/k8s-sidecar:1.25.4",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:01:48Z"
+                }
+              }
+            },
+            {
+              "ContainerName": "grafana",
+              "Image": "grafana/grafana:10.3.3",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:01:47Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "kubecost-prometheus-server-5ffdc75b85-qrx9r",
+          "Containers": [
+            {
+              "ContainerName": "prometheus-server",
+              "Image": "quay.io/prometheus/prometheus:v2.49.1",
+              "Status": {
+                "running": {
+                  "startedAt": "2024-02-29T19:13:42Z"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Pod": "oauth2-proxy-6667cf4d6f-sgbzn",
+          "Containers": [
+            {
+              "ContainerName": "oauth2-proxy",
+              "Image": "quay.io/oauth2-proxy/oauth2-proxy:v7.6.0",
+              "Status": {
+                "waiting": {
+                  "message": "back-off 5m0s restarting failed container=oauth2-proxy pod=oauth2-proxy-6667cf4d6f-sgbzn_kubecost(213c89a7-98a8-4f57-a584-7939d42fa15b)",
+                  "reason": "CrashLoopBackOff"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "HelmReleases": [
+        {
+          "name": "kubecost",
+          "namespace": "kubecost",
+          "revision": "2",
+          "updated": "2024-02-29 14:13:26.038423948 -0500 EST",
+          "status": "deployed",
+          "chart": "cost-analyzer-v0.0.1709197080",
+          "app_version": "v0.0.1709197080"
+        },
+        {
+          "name": "oauth2-proxy",
+          "namespace": "kubecost",
+          "revision": "1",
+          "updated": "2024-02-28 18:15:11.976104 -0400 -0400",
+          "status": "deployed",
+          "chart": "oauth2-proxy-7.0.0",
+          "app_version": "7.6.0"
+        }
+      ]
+    }
+  ]
+}

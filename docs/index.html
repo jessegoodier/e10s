@@ -1,0 +1,200 @@
+<!doctype html>
+<html itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+    <head>
+        <!-- Set the title of the page -->
+        <title>e10s-web</title>
+        <!-- Set the favicon of the page -->
+        <link rel="icon" href="https://raw.githubusercontent.com/jessegoodier/e10s/main/docs/favicon.ico" type="image/x-icon">
+        <!-- Link to the CSS stylesheet -->
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
+    </head>
+    <body>
+        <script>
+                // Fetch the JSON data
+                fetch("envs.json")
+                    .then((response) => response.json()) // Parse the response as JSON
+                    .then((data) => {
+                        // Get the body element
+                        const body = document.getElementsByTagName("body")[0];
+
+                        // Iterate over each namespace in the data
+                        data.Namespaces.forEach((namespace) => {
+                            // Create a new heading for the namespace
+                            const heading = document.createElement("h2");
+                            heading.textContent = "Namespace: " + namespace.Namespace + " (" + namespace.Pods.length + " pods)";
+                            body.appendChild(heading);
+
+                            // Create a new list for the ingresses
+                            const ingressList = document.createElement("ul");
+
+                            // Check if the namespace has any ingresses
+                            if (namespace.Ingress && namespace.Ingress.length > 0) {
+                                // Iterate over each ingress in the namespace
+                                namespace.Ingress.forEach((ingress) => {
+                                    // Create a new list item for the ingress
+                                    const ingressItem = document.createElement("li");
+                                    ingressItem.innerHTML = "<a href=\"https://" + ingress.Host + ingress.Path + "\">" + ingress.Host + ingress.Path + "</a>";
+                                    // Append the list item to the list
+                                    ingressList.appendChild(ingressItem);
+                                });
+                            } else {
+                                // Create a new list item for the "No ingresses" message
+                                const ingressItem = document.createElement("li");
+                                ingressItem.innerHTML = "No ingresses";
+                                // Append the list item to the list
+                                ingressList.appendChild(ingressItem);
+                            }
+
+                            // Append the list to the body
+                            body.appendChild(ingressList);
+
+                            // Create a new list for the HelmReleases
+                            const helmReleaseList = document.createElement("ul");
+
+                            // Check if the namespace has any HelmReleases
+                            if (namespace.HelmReleases && namespace.HelmReleases.length > 0) {
+                                // Iterate over each HelmRelease in the namespace
+                                namespace.HelmReleases.forEach((helmRelease) => {
+
+                                    // var status = Object.keys(container.Status)[0];
+
+                                    // Get the JSON of the helm release and add line breaks after each comma and brace
+                                    var helmDetail = JSON.stringify(helmRelease, null, 2);
+                                    helmDetail = helmDetail.replace(/,/g, ',<br>');
+                                    helmDetail = helmDetail.replace(/}/g, '<br>}');
+                                    helmDetail = helmDetail.replace(/{/g, '{<br>');
+
+                                    // Create a new list item for the HelmRelease
+                                    const helmReleaseItem = document.createElement("li");
+                                    helmReleaseItem.classList.add("helm-container");
+                                    helmReleaseItem.innerHTML = `
+                                    Helm release:
+                                        <u>${helmRelease.name}</u>
+                                        <span class="helm-details">${helmDetail}</span>
+                                    `;
+                                    // Append the list item to the list
+                                    helmReleaseList.appendChild(helmReleaseItem);
+                                });
+                            } else {
+                                // Create a new list item for the "No HelmReleases" message
+                                const helmReleaseItem = document.createElement("li");
+                                helmReleaseItem.innerHTML = "No Helm Releases";
+                                // Append the list item to the list
+                                helmReleaseList.appendChild(helmReleaseItem);
+                            }
+
+                            // Append the list to the body
+                            body.appendChild(helmReleaseList);
+
+                            // Check if there are any pods in this namespace
+                            if (namespace.Pods.length === 0) {
+                                // If there are no pods, create a new paragraph with the "No pods" message
+
+                                const noPods = document.createElement("ul");
+                                const noPodsItem = document.createElement("li");
+
+                                noPodsItem.innerHTML = "No pods";
+                                noPods.appendChild(noPodsItem);
+                                document.body.appendChild(noPods);
+
+                            } else {
+                                // If there are pods, create a new table for the pods
+                                createPodTable(namespace, body);
+                            }
+
+                        });
+                    });
+
+                function createPodTable(namespace, body) {
+                    // Create a new table for the namespace
+                    const table = document.createElement("table");
+                            table.innerHTML = `
+                                <thead>
+                                    <tr>
+                                        <th>Pod</th>
+                                        <th>Container</th>
+                                        <th>Image</th>
+                                        <th>Status</th>
+                                        <th>StartedAt</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            `;
+                            body.appendChild(table);
+
+                            // Get the table body
+                            const tableBody = table.getElementsByTagName("tbody")[0];
+
+                            // Iterate over each pod in the namespace
+                            namespace.Pods.forEach((pod) => {
+                                // Iterate over each container in the pod
+                                pod.Containers.forEach((container) => {
+                                    // Insert a new row in the table
+                                    const newRow = tableBody.insertRow();
+
+                                    // Initialize the reason variable and get the status of the container
+                                    var reason = "";
+                                    var status = Object.keys(container.Status)[0];
+
+                                    // Get the JSON of the status and add line breaks after each comma and brace
+                                    var reason = JSON.stringify(container.Status, null, 2);
+                                    reason = reason.replace(/,/g, ',<br>');
+                                    reason = reason.replace(/}/g, '<br>}');
+                                    reason = reason.replace(/{/g, '{<br>');
+
+                                    // Get the start time of the container
+                                    startedAt = container.Status[status].startedAt;
+
+                                    // Initialize the row with the pod name, container name, and image
+                                    thisRow = `
+                                        <td>${pod.Pod}</td>
+                                        <td>${container.ContainerName}</td>
+                                        <td>${container.Image}</td>`
+
+                                    // If the container is running or terminated, add the status and start time to the row
+                                    if (status === "running") {
+                                        thisRow += `<td>${status}</td>
+                                                                <td>${startedAt}</td>`
+                                    } else if (status === "terminated") {
+                                        thisRow += `
+                                        <td><div class="tooltip"><u>${status}</u>
+                                            <span class="tooltiptext">${reason}</span>
+                                        </div></td>
+                                        <td>-</td>`
+                                    } else {
+                                        // If the container has any other status, add the status (with a tooltip for the reason) and a placeholder for the start time to the row
+                                        thisRow += `<td bgcolor="darkred">
+                                            <div class="tooltip"><u>${status}</u>
+                                                <span class="tooltiptext">${reason}</span>
+                                            </div></td>
+                                            <td>-</td>`
+                                    }
+
+                                    // Set the HTML of the new row to the constructed row
+                                    newRow.innerHTML = thisRow;
+                                });
+                            });
+                } // end of createPodTable
+
+            </script>
+            <script>
+                // Get all tooltip elements
+                const tooltips = document.querySelectorAll('.tooltip');
+
+                // Iterate over each tooltip
+                tooltips.forEach(tooltip => {
+                    // Add an event listener for the mouseover event
+                    tooltip.addEventListener('mouseover', () => {
+                        // When the mouse is over the tooltip, make the tooltip text visible
+                        tooltip.querySelector('.tooltiptext').style.visibility = 'visible';
+                    });
+
+                    // Add an event listener for the mouseout event
+                    tooltip.addEventListener('mouseout', () => {
+                        // When the mouse is not over the tooltip, make the tooltip text hidden
+                        tooltip.querySelector('.tooltiptext').style.visibility = 'hidden';
+                    });
+                });
+            </script>
+    </body>
+</html>

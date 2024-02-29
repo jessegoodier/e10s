@@ -1,0 +1,59 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: e10s-clusterrole
+rules:
+- apiGroups: [""]
+  # secrets are needed for `helm list`
+  resources: ["pods", "secrets", "namespaces"]
+  verbs: ["get", "list"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: manage-deployment
+  namespace: e10s
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["delete", "get", "list", "create"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: manage-deployment
+  namespace: e10s
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: manage-deployment
+subjects:
+- kind: ServiceAccount
+  name: e10s-sa
+  namespace: e10s
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: e10s-clusterrole
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: e10s-clusterrole
+subjects:
+- kind: ServiceAccount
+  name: e10s-sa
+  namespace: e10s
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: e10s-sa
+  namespace: e10s

@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e10s-web
+  labels:
+    app: e10s-web
+spec:
+  replicas: 2 # graceful rollout restarts
+  selector:
+    matchLabels:
+      app: e10s-web
+  template:
+    metadata:
+      labels:
+        app: e10s-web
+    spec:
+      containers:
+      - name: e10s-web
+        image: nginxinc/nginx-unprivileged
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        resources: {}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/index.html
+          name: html
+          readOnly: true
+          subPath: index.html
+        - name: envs-json
+          mountPath: /usr/share/nginx/html/envs.json
+          subPath: envs.json
+          readOnly: true
+        - mountPath: /usr/share/nginx/html/css
+          name: css
+          readOnly: true
+        - mountPath: /tmp
+          name: tmp
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: html
+        configMap:
+          name: html
+          items:
+            - key: index.html
+              path: index.html
+      - name: envs-json
+        configMap:
+          name: envs-json
+          items:
+            - key: envs.json
+              path: envs.json
+      - name: css
+        configMap:
+          name: styles-css
+          items:
+            - key: styles.css
+              path: styles.css
+      - name: tmp
+        emptyDir: {}
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+        fsGroup: 1001
+        runAsGroup: 1001
+        runAsUser: 1001
+        fsGroupChangePolicy: OnRootMismatch
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: e10s-web
+spec:
+  ports:
+    - name: e10s-web
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: e10s-web
+  type: ClusterIP
