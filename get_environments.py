@@ -72,7 +72,7 @@ def manage_configmap():
     try:
         delete_cm = subprocess.run(["kubectl", "delete", "configmap", "envs-json", "-n", "e10s"], check=True)
     except subprocess.CalledProcessError as e:
-        print(f"Error occurred while deleting configmap: {e}\n{delete_cm.stderr}")
+        print(f"Error occurred while deleting configmap (expected on first run): {e}")
 
     try:
         create_cm = subprocess.run(["kubectl", "create", "configmap", "envs-json", "-n", "e10s", "--from-file", "docs/envs.json"])

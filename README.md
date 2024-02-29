@@ -62,7 +62,7 @@ Then:
 ```sh
 kubectl create ns e10s
 kubectl create configmap get-environments --from-file get_environments.py -n e10s
-kubectl create configmap css --from-file docs/css/styles.css -n e10s
+kubectl create configmap styles-css --from-file docs/css/styles.css -n e10s
 kubectl create configmap html --from-file docs/index.html -n e10s
 kubectl apply -f ./manifests -n e10s
 ```
@@ -83,7 +83,7 @@ A pod manifest is included for one-off runs of the python script. This is useful
 
 ```sh
 kubectl create configmap get-environments --from-file get_environments.py -n e10s
-kubectl create configmap css --from-file docs/css/styles.css -n e10s
+kubectl create configmap styles-css --from-file docs/css/styles.css -n e10s
 kubectl create configmap html --from-file docs/index.html -n e10s
 kubectl apply -f ./manifests/rbac.yaml -n e10s
 kubectl apply -f testing/test-script-runner-deployment.yaml -n e10s
