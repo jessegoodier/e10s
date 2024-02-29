@@ -34,7 +34,7 @@ Screenshot:
 
 ## Security Considerations
 
-This will expose every ingress in your cluster.  Please consider the security implications of this.
+This will list every ingress in your cluster.  Please consider the security implications of this.
 
 See the [oauth2 readme](auth/oauth2-proxy/README.md) as an example of how to secure this.
 
@@ -44,7 +44,11 @@ The cronJob that creates the html configMap has a serviceAccount with cluster-wi
 
 If you remove the helm list function, RBAC get secrets is not needed.
 
-## Usage
+## How it works
+
+The cronJob runs a python script that builds a json file. This `envs.json` is then saved as a configMap. The web server then hosts the configMap that the index.html parses.
+
+## Install
 
 Clone this repo:
 
@@ -59,6 +63,7 @@ Then:
 kubectl create ns e10s
 kubectl create configmap get-environments --from-file get_environments.py -n e10s
 kubectl create configmap css --from-file docs/css/styles.css -n e10s
+kubectl create configmap html --from-file docs/index.html -n e10s
 kubectl apply -f ./manifests -n e10s
 ```
 
@@ -77,13 +82,14 @@ You'll likely want to expose the service with a protected ingress. An example of
 A pod manifest is included for one-off runs of the python script. This is useful for debugging or if you don't want to wait for the cronjob to run.
 
 ```sh
-kubectl create configmap css --from-file docs/css/styles.css -n e10s
 kubectl create configmap get-environments --from-file get_environments.py -n e10s
+kubectl create configmap css --from-file docs/css/styles.css -n e10s
+kubectl create configmap html --from-file docs/index.html -n e10s
 kubectl apply -f ./manifests/rbac.yaml -n e10s
 kubectl apply -f testing/test-script-runner-deployment.yaml -n e10s
 ```
 
 ### Dockerfile
 
-The Dockerfile is maintained here: <https://github.com/alpine-docker/k8s>
-# e10s
+The Dockerfile that runs the cronJob python script is maintained here: <https://github.com/alpine-docker/k8s>
+Any container image that has kubectl, helm and python should work fine.
